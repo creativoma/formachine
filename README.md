@@ -3,6 +3,8 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 [![Tests](https://img.shields.io/badge/tests-498%20passing-success)](./package.json)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![npm version](https://img.shields.io/npm/v/@creativoma/formachine?color=blue)](https://www.npmjs.com/package/@creativoma/formachine)
+[![Downloads](https://img.shields.io/npm/dm/@creativoma/formachine?color=orange)](https://www.npmjs.com/package/@creativoma/formachine)
 
 **Type-safe, declarative multi-step forms for React**
 
