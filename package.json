@@ -1,0 +1,50 @@
+{
+  "name": "formachine",
+  "version": "0.0.1",
+  "private": true,
+  "author": "Mariano Álvarez",
+  "description": "Type-safe, declarative multi-step forms for React",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/user/formachine.git"
+  },
+  "license": "MIT",
+  "scripts": {
+    "dev": "pnpm -r --parallel dev",
+    "build": "pnpm -r build",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "coverage": "vitest run --coverage",
+    "coverage:ui": "vitest run --coverage && open coverage/index.html",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "biome lint .",
+    "lint:fix": "biome lint --write .",
+    "format": "biome format .",
+    "format:fix": "biome format --write .",
+    "check": "biome check .",
+    "check:fix": "biome check --write .",
+    "validate": "pnpm check && pnpm typecheck && pnpm test:run",
+    "clean": "pnpm -r clean && rm -rf node_modules",
+    "prepublishOnly": "pnpm validate && pnpm build"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.3.10",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.1",
+    "@testing-library/user-event": "^14.6.1",
+    "@typescript-eslint/eslint-plugin": "^8.51.0",
+    "@typescript-eslint/parser": "^8.51.0",
+    "@vitejs/plugin-react": "^5.1.2",
+    "eslint": "^9.39.2",
+    "jsdom": "^27.4.0",
+    "prettier": "^3.7.4",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.16"
+  },
+  "packageManager": "pnpm@9.15.2",
+  "engines": {
+    "node": ">=22"
+  }
+}

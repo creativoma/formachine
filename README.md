@@ -1,0 +1,411 @@
+# formachine
+
+> Type-safe, declarative multi-step forms for React.
+
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
+[![Tests](https://img.shields.io/badge/tests-291%20passing-success)](./package.json)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+A library for building complex multi-step forms with **branching logic**, **persistence**, and **end-to-end type safety**. Built on top of React Hook Form and Zod.
+
+## Features
+
+✨ **Declarative Flow Definition** - Define your form as a state machine
+🔀 **Conditional Branching** - Dynamic paths based on user input
+💾 **Persistence** - localStorage, sessionStorage, or custom adapters
+⏱️ **TTL & Versioning** - Automatic data expiration and migrations
+🔄 **Async Validation** - Debounced, cached, retryable validations
+🎯 **Type Safety** - Full TypeScript inference from Zod schemas
+🪝 **React Integration** - Hooks and components for seamless UX
+🧪 **Well Tested** - +290 tests passing
+
+## Quick Start
+
+### Requirements
+
+- Node.js >= 22
+- pnpm >= 9
+
+### Installation
+
+```bash
+npm install @formachine/core @formachine/react zod react-hook-form
+# Optional: for persistence
+npm install @formachine/persist
+
+# Or with pnpm
+pnpm add @formachine/core @formachine/react zod react-hook-form
+# Optional: for persistence
+pnpm add @formachine/persist
+```
+
+### Basic Example
+
+```tsx
+import { z } from 'zod'
+import { createFormFlow } from '@formachine/core'
+import { useFormFlow, Step } from '@formachine/react'
+
+// 1. Define your flow
+const signupFlow = createFormFlow({
+  id: 'signup',
+  steps: {
+    email: {
+      schema: z.object({
+        email: z.string().email(),
+      }),
+      next: 'password',
+    },
+    password: {
+      schema: z.object({
+        password: z.string().min(8),
+      }),
+      next: null,
+    },
+  },
+  initial: 'email',
+})
+
+// 2. Use in your component
+function SignupForm() {
+  const flow = useFormFlow(signupFlow, {
+    onComplete: async (data) => {
+      console.log('Signup complete!', data)
+      // Submit to your API
+    },
+  })
+
+  return (
+    <div>
+      <Step flow={flow} step="email">
+        <input {...flow.form.register('email')} />
+      </Step>
+
+      <Step flow={flow} step="password">
+        <input type="password" {...flow.form.register('password')} />
+      </Step>
+
+      <button onClick={() => flow.next()}>
+        Continue
+      </button>
+    </div>
+  )
+}
+```
+
+## 📚 Learning Path
+
+New to FormMachine? Follow this recommended learning path:
+
+1. **🚀 Start here**: [Minimal Example](examples/minimal) - Simplest possible implementation (3 steps, no extras)
+2. **📈 Level up**: [Onboarding Flow Example](examples/onboarding-flow) - Real-world app with branching, persistence, and UI
+3. **📖 Deep dive**: [API Documentation](docs/api) - Complete reference for all features
+
+Each example builds on the previous one, gradually introducing more concepts.
+
+## Advanced Features
+
+### Conditional Branching
+
+```tsx
+const surveyFlow = createFormFlow({
+  id: 'survey',
+  steps: {
+    question1: {
+      schema: z.object({
+        satisfied: z.boolean(),
+      }),
+      // Dynamic next step based on answer
+      next: (data) => (data.satisfied ? 'thankYou' : 'feedback'),
+    },
+    feedback: {
+      schema: z.object({
+        reason: z.string().min(10),
+      }),
+      next: 'thankYou',
+    },
+    thankYou: {
+      schema: z.object({ done: z.boolean() }),
+      next: null,
+    },
+  },
+  initial: 'question1',
+})
+```
+
+### Persistence with TTL
+
+```tsx
+import { withPersistence } from '@formachine/persist'
+import { localStorage } from '@formachine/persist/adapters'
+
+const persistedFlow = withPersistence(signupFlow, {
+  adapter: localStorage,
+  key: 'signup-progress',
+  ttl: 24 * 60 * 60 * 1000, // 24 hours
+  version: 1,
+})
+
+function App() {
+  const flow = useFormFlow(persistedFlow, {
+    onStepComplete: async (stepId, stepData) => {
+      // Auto-save after each step
+      await persistedFlow.persist(flow.state)
+    },
+  })
+
+  // Hydrate on mount
+  useEffect(() => {
+    persistedFlow.hydrate().then((savedState) => {
+      if (savedState) {
+        // State restored automatically
+        console.log('Restored from localStorage')
+      }
+    })
+  }, [])
+
+  return <YourForm />
+}
+```
+
+### Async Validation with Retry
+
+```tsx
+import { debounce, withRetry } from '@formachine/core'
+
+const checkEmailAvailability = debounce(async (email: string) => {
+  return withRetry(
+    async () => {
+      const response = await fetch(`/api/check-email?email=${email}`)
+      return response.json()
+    },
+    { maxAttempts: 3, delay: 1000 }
+  )
+}, 300)
+
+const schema = z.object({
+  email: z.string().email().refine(
+    async (email) => {
+      const { available } = await checkEmailAvailability(email)
+      return available
+    },
+    { message: 'Email already taken' }
+  ),
+})
+```
+
+## API Reference
+
+### Core Package (`@formachine/core`)
+
+#### `createFormFlow(definition)`
+
+Creates a form flow state machine.
+
+```tsx
+const flow = createFormFlow({
+  id: 'unique-id',
+  steps: {
+    stepName: {
+      schema: zodSchema,      // Zod schema for validation
+      next: 'nextStep' | fn,  // Static or dynamic next step
+    },
+  },
+  initial: 'firstStep',
+})
+```
+
+#### Validation Utilities
+
+```tsx
+import {
+  debounce,              // Debounce async functions
+  withRetry,            // Retry failed operations
+  createAbortableValidation, // Cancel in-flight validations
+  createValidationCache,     // Cache validation results
+} from '@formachine/core'
+```
+
+### React Package (`@formachine/react`)
+
+#### `useFormFlow(flow, options)`
+
+Main hook for form flow state management.
+
+```tsx
+const {
+  // Navigation
+  currentStep,
+  next,           // () => Promise<boolean>
+  back,           // () => void
+  goTo,           // (step) => void
+  reset,          // (data?) => void
+
+  // State
+  path,           // string[] - current path through flow
+  completedSteps, // Set<string> - completed steps
+  isComplete,     // boolean
+  isSubmitting,   // boolean
+
+  // Data
+  getData,        // (step) => data
+  setData,        // (step, data) => void
+
+  // Form (react-hook-form)
+  form,           // UseFormReturn
+} = useFormFlow(flow, {
+  onComplete: async (data) => {},      // Called when flow completes
+  onStepComplete: async (step, data) => {}, // Called after each step
+  onError: (error) => {},             // Error handler
+  initialData: {},                    // Pre-populate data
+})
+```
+
+#### `<Step>` Component
+
+Renders content for specific step.
+
+```tsx
+<Step flow={flow} step="stepName">
+  <YourStepContent />
+</Step>
+```
+
+### Persist Package (`@formachine/persist`)
+
+#### `withPersistence(flow, options)`
+
+Adds persistence to a flow.
+
+```tsx
+const persistedFlow = withPersistence(flow, {
+  adapter: localStorage,        // or sessionStorage, or custom
+  key: 'storage-key',
+  ttl: 24 * 60 * 60 * 1000,    // Optional: expiration time
+  version: 1,                   // Optional: for migrations
+  migrate: (oldData, oldVersion) => newData, // Optional: migration fn
+})
+
+// Methods
+await persistedFlow.persist(state)    // Save state
+await persistedFlow.hydrate()         // Load state
+await persistedFlow.clear()           // Clear storage
+```
+
+#### Adapters
+
+```tsx
+import {
+  localStorage,
+  sessionStorage,
+  createAdapter,
+} from '@formachine/persist/adapters'
+
+// Custom adapter
+const customAdapter = createAdapter({
+  getItem: async (key) => { /* ... */ },
+  setItem: async (key, value) => { /* ... */ },
+  removeItem: async (key) => { /* ... */ },
+})
+```
+
+## Type Safety
+
+Full type inference from your Zod schemas:
+
+```tsx
+const flow = createFormFlow({
+  steps: {
+    user: {
+      schema: z.object({
+        name: z.string(),
+        age: z.number(),
+      }),
+      next: 'done',
+    },
+    done: { schema: z.object({}), next: null },
+  },
+  initial: 'user',
+})
+
+// TypeScript knows the exact shape!
+flow.onComplete((data) => {
+  data.user.name  // ✅ string
+  data.user.age   // ✅ number
+  data.user.email // ❌ TypeScript error
+})
+```
+
+## Examples
+
+See the [`examples/`](./examples) directory:
+
+- **[onboarding-flow](./examples/onboarding-flow)** - Multi-step onboarding with branching, persistence, and conditional logic
+
+## Architecture
+
+FormMachine is built as a monorepo with focused packages:
+
+- **`@formachine/core`** - State machine, validation, utilities
+- **`@formachine/react`** - React hooks and components
+- **`@formachine/persist`** - Persistence adapters
+
+## Testing & Coverage
+
+### Run Tests
+
+```bash
+pnpm test              # Run tests in watch mode
+pnpm test:run          # Run tests once
+```
+
+### Coverage Reports
+
+```bash
+pnpm coverage          # Generate coverage report
+pnpm coverage:ui       # Generate and open HTML report
+```
+
+Coverage reports are generated in the `coverage/` directory:
+- **Terminal:** Text summary shown in console
+- **JSON:** `coverage/coverage-final.json`
+- **HTML:** `coverage/index.html` (interactive report)
+
+### Coverage Configuration
+
+The project uses Vitest with V8 coverage provider. Configuration in `vitest.config.ts`:
+- Includes all source files in `packages/*/src/**/*.{ts,tsx}`
+- Excludes test files and index exports
+- Generates text, JSON, and HTML reports
+
+## Contributing
+
+Contributions are welcome! Please read our [contributing guide](./CONTRIBUTING.md).
+
+```bash
+# Clone the repository
+git clone https://github.com/user/formachine.git
+cd formachine
+
+# Install dependencies
+pnpm install
+
+# Run tests
+pnpm test
+
+# Build all packages
+pnpm build
+
+# Run the example
+pnpm --filter onboarding-flow-example dev
+```
+
+## License
+
+MIT © Mariano Álvarez
+
+## Acknowledgments
+
+- [React Hook Form](https://react-hook-form.com/) - Form primitives
+- [Zod](https://zod.dev/) - Schema validation
+- [XState](https://xstate.js.org/) - State machine concepts
