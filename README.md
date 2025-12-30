@@ -10,14 +10,14 @@ A library for building complex multi-step forms with **branching logic**, **pers
 
 ## Features
 
-✨ **Declarative Flow Definition** - Define your form as a state machine
-🔀 **Conditional Branching** - Dynamic paths based on user input
-💾 **Persistence** - localStorage, sessionStorage, or custom adapters
-⏱️ **TTL & Versioning** - Automatic data expiration and migrations
-🔄 **Async Validation** - Debounced, cached, retryable validations
-🎯 **Type Safety** - Full TypeScript inference from Zod schemas
-🪝 **React Integration** - Hooks and components for seamless UX
-🧪 **Well Tested** - +290 tests passing
+- **Declarative Flow Definition** - Define your form as a state machine
+- **Conditional Branching** - Dynamic paths based on user input
+- **Persistence** - localStorage, sessionStorage, or custom adapters
+- **TTL & Versioning** - Automatic data expiration and migrations
+- **Async Validation** - Debounced, cached, retryable validations
+- **Type Safety** - Full TypeScript inference from Zod schemas
+- **React Integration** - Hooks and components for seamless UX
+- **Well Tested** - +290 tests passing
 
 ## Quick Start
 
@@ -97,9 +97,9 @@ function SignupForm() {
 
 New to FormMachine? Follow this recommended learning path:
 
-1. **🚀 Start here**: [Minimal Example](examples/minimal) - Simplest possible implementation (3 steps, no extras)
-2. **📈 Level up**: [Onboarding Flow Example](examples/onboarding-flow) - Real-world app with branching, persistence, and UI
-3. **📖 Deep dive**: [API Documentation](docs/api) - Complete reference for all features
+1. **Start here**: [Minimal Example](examples/minimal) - Simplest possible implementation (3 steps, no extras)
+2. **Level up**: [Onboarding Flow Example](examples/onboarding-flow) - Real-world app with branching, persistence, and UI
+3. **Deep dive**: [API Documentation](docs/api) - Complete reference for all features
 
 Each example builds on the previous one, gradually introducing more concepts.
 
