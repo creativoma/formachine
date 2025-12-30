@@ -1,5 +1,11 @@
 # minimal-example
 
+## 0.0.3
+
+### Patch Changes
+
+- chore: remove private field from package.json files and add repository info
+
 ## 0.0.2
 
 ### Patch Changes

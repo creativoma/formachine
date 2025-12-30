@@ -1,7 +1,6 @@
 {
   "name": "formachine",
   "version": "0.0.2",
-  "private": true,
   "author": "Mariano Álvarez",
   "description": "Type-safe, declarative multi-step forms for React",
   "repository": {

@@ -1,7 +1,6 @@
 {
   "name": "minimal-example",
-  "version": "0.0.2",
-  "private": true,
+  "version": "0.0.3",
   "type": "module",
   "scripts": {
     "dev": "vite",
