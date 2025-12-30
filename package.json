@@ -6,7 +6,7 @@
   "description": "Type-safe, declarative multi-step forms for React",
   "repository": {
     "type": "git",
-    "url": "https://github.com/user/formachine.git"
+    "url": "https://github.com/creativoma/formachine.git"
   },
   "license": "MIT",
   "scripts": {

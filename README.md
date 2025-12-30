@@ -476,7 +476,7 @@ Contributions are welcome! Please read our [contributing guide](./CONTRIBUTING.m
 
 ```bash
 # Clone the repository
-git clone https://github.com/user/formachine.git
+git clone https://github.com/creativoma/formachine.git
 cd formachine
 
 # Install dependencies

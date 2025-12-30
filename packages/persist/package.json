@@ -3,6 +3,11 @@
   "version": "0.2.1",
   "description": "Persistence adapters for formachine",
   "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/creativoma/formachine.git",
+    "directory": "packages/persist"
+  },
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
