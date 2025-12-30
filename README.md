@@ -1,7 +1,7 @@
 ![cover](./public/cover.avif)
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
-[![Tests](https://img.shields.io/badge/tests-439%20passing-success)](./package.json)
+[![Tests](https://img.shields.io/badge/tests-498%20passing-success)](./package.json)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **Type-safe, declarative multi-step forms for React**
@@ -17,7 +17,7 @@ A library for building complex multi-step forms with **branching logic**, **pers
 - **Async Validation** - Debounced, cached, retryable validations
 - **Type Safety** - Full TypeScript inference from Zod schemas
 - **React Integration** - Hooks and components for seamless UX
-- **Well Tested** - 439 tests passing
+- **Well Tested** - 498 tests passing
 
 ## Quick Start
 
