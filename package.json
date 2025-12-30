@@ -1,6 +1,6 @@
 {
   "name": "@creativoma/formachine",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Type-safe, declarative multi-step forms for React",
   "type": "module",
   "author": "Mariano Álvarez",

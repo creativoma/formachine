@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.2
+
+### Patch Changes
+
+- chore: disable sourcemap generation in tsup configuration
+
 ## 0.2.1
 
 ### Patch Changes
