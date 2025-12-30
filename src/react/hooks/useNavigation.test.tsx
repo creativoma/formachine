@@ -3,11 +3,13 @@ import { act, renderHook } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { z } from 'zod'
 import { useFormFlow } from './useFormFlow'
+import { useNavigation } from './useNavigation'
+import { FormFlowProvider } from '../components/Provider'
+import type { ReactNode } from 'react'
 
 /**
  * Tests for useNavigation hook functionality.
- * Since useNavigation extracts navigation-related values from the FormFlowContext,
- * we test through useFormFlow which provides these values.
+ * We test both directly using useNavigation and through useFormFlow.
  */
 describe('useNavigation', () => {
   const linearFlow = createFormFlow({
@@ -64,6 +66,30 @@ describe('useNavigation', () => {
       },
     },
     initial: 'start',
+  })
+
+  describe('direct hook usage', () => {
+    it('should return navigation values from context', () => {
+      const { result: formFlowResult } = renderHook(() => useFormFlow(linearFlow))
+
+      const { result } = renderHook(() => useNavigation(), {
+        wrapper: ({ children }: { children: ReactNode }) => (
+          <FormFlowProvider value={formFlowResult.current}>
+            {children}
+          </FormFlowProvider>
+        ),
+      })
+
+      expect(result.current.currentStep).toBe('step1')
+      expect(result.current.completedSteps).toBeDefined()
+      expect(result.current.isSubmitting).toBe(false)
+      expect(result.current.canGoBack).toBe(false)
+      expect(result.current.canGoNext).toBe(true)
+      expect(typeof result.current.next).toBe('function')
+      expect(typeof result.current.back).toBe('function')
+      expect(typeof result.current.goTo).toBe('function')
+      expect(typeof result.current.canGoTo).toBe('function')
+    })
   })
 
   describe('currentStep', () => {

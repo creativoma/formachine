@@ -3,11 +3,13 @@ import { act, renderHook } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { z } from 'zod'
 import { useFormFlow } from './useFormFlow'
+import { usePath } from './usePath'
+import { FormFlowProvider } from '../components/Provider'
+import type { ReactNode } from 'react'
 
 /**
  * Tests for usePath hook functionality.
- * Since usePath extracts path-related values from the FormFlowContext,
- * we test through useFormFlow which provides these values.
+ * We test both directly using usePath and through useFormFlow.
  */
 describe('usePath', () => {
   const linearFlow = createFormFlow({
@@ -77,6 +79,27 @@ describe('usePath', () => {
       },
     },
     initial: 'only',
+  })
+
+  describe('direct hook usage', () => {
+    it('should return path values from context', () => {
+      const { result: formFlowResult } = renderHook(() => useFormFlow(linearFlow))
+
+      const { result } = renderHook(() => usePath(), {
+        wrapper: ({ children }: { children: ReactNode }) => (
+          <FormFlowProvider value={formFlowResult.current}>
+            {children}
+          </FormFlowProvider>
+        ),
+      })
+
+      expect(result.current.reachablePath).toEqual(['step1'])
+      expect(result.current.totalSteps).toBe(1)
+      expect(result.current.currentIndex).toBe(0)
+      expect(result.current.progress).toBeCloseTo(100, 1)
+      expect(result.current.isFirstStep).toBe(true)
+      expect(result.current.isLastStep).toBe(true)
+    })
   })
 
   describe('path (reachablePath)', () => {

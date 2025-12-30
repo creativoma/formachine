@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest'
-import { createAdapter } from './custom'
+import { createAdapter, createMemoryAdapter } from './custom'
 import { localStorage as localStorageAdapter } from './localStorage'
 import { sessionStorage as sessionStorageAdapter } from './sessionStorage'
 
@@ -162,10 +162,88 @@ describe('Persistence Adapters', () => {
     })
   })
 
+  describe('createMemoryAdapter', () => {
+    it('should create an in-memory adapter', () => {
+      const adapter = createMemoryAdapter()
+
+      adapter.setItem('key1', 'value1')
+      adapter.setItem('key2', 'value2')
+
+      expect(adapter.getItem('key1')).toBe('value1')
+      expect(adapter.getItem('key2')).toBe('value2')
+    })
+
+    it('should return null for non-existent keys', () => {
+      const adapter = createMemoryAdapter()
+
+      expect(adapter.getItem('non-existent')).toBeNull()
+    })
+
+    it('should remove items', () => {
+      const adapter = createMemoryAdapter()
+
+      adapter.setItem('key', 'value')
+      expect(adapter.getItem('key')).toBe('value')
+
+      adapter.removeItem('key')
+      expect(adapter.getItem('key')).toBeNull()
+    })
+
+    it('should overwrite existing values', () => {
+      const adapter = createMemoryAdapter()
+
+      adapter.setItem('key', 'value1')
+      adapter.setItem('key', 'value2')
+
+      expect(adapter.getItem('key')).toBe('value2')
+    })
+
+    it('should be isolated from other instances', () => {
+      const adapter1 = createMemoryAdapter()
+      const adapter2 = createMemoryAdapter()
+
+      adapter1.setItem('key', 'value1')
+      adapter2.setItem('key', 'value2')
+
+      expect(adapter1.getItem('key')).toBe('value1')
+      expect(adapter2.getItem('key')).toBe('value2')
+    })
+
+    it('should handle multiple items', () => {
+      const adapter = createMemoryAdapter()
+
+      adapter.setItem('key1', 'value1')
+      adapter.setItem('key2', 'value2')
+      adapter.setItem('key3', 'value3')
+
+      expect(adapter.getItem('key1')).toBe('value1')
+      expect(adapter.getItem('key2')).toBe('value2')
+      expect(adapter.getItem('key3')).toBe('value3')
+
+      adapter.removeItem('key2')
+
+      expect(adapter.getItem('key1')).toBe('value1')
+      expect(adapter.getItem('key2')).toBeNull()
+      expect(adapter.getItem('key3')).toBe('value3')
+    })
+
+    it('should handle JSON data', () => {
+      const adapter = createMemoryAdapter()
+      const data = JSON.stringify({ foo: 'bar', num: 123 })
+
+      adapter.setItem('json-key', data)
+
+      const result = adapter.getItem('json-key')
+      // biome-ignore lint/style/noNonNullAssertion: Test verifies data exists
+      expect(JSON.parse(result!)).toEqual({ foo: 'bar', num: 123 })
+    })
+  })
+
   describe('Adapter interface compliance', () => {
     const adapters = [
       { name: 'localStorage', adapter: localStorageAdapter },
       { name: 'sessionStorage', adapter: sessionStorageAdapter },
+      { name: 'memoryAdapter', adapter: createMemoryAdapter() },
       {
         name: 'custom',
         adapter: createAdapter({
