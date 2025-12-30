@@ -55,7 +55,7 @@ A complete example demonstrating formachine's capabilities through a user onboar
 ### Installation
 
 ```bash
-# From the monorepo root
+# From the project root
 pnpm install
 
 # Or from this directory
@@ -66,7 +66,7 @@ pnpm install
 ### Development
 
 ```bash
-# From the monorepo root
+# From the project root
 pnpm --filter onboarding-flow dev
 
 # Or from this directory

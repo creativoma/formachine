@@ -19,11 +19,11 @@ This is the **simplest possible** FormMachine implementation. It demonstrates th
 ## Running the example
 
 ```bash
-# From the root of the monorepo
+# From the project root
 pnpm install
 
 # Run this example
-pnpm --filter @formachine/example-minimal dev
+pnpm --filter minimal-example dev
 ```
 
 Then open http://localhost:5173

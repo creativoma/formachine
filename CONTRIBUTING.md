@@ -27,7 +27,7 @@ Be respectful and constructive in all interactions. We aim to foster an inclusiv
    pnpm install
    ```
 
-4. Build all packages:
+4. Build the project:
    ```bash
    pnpm build
    ```
@@ -41,16 +41,15 @@ Be respectful and constructive in all interactions. We aim to foster an inclusiv
 
 ### Project Structure
 
-The project is organized as a monorepo:
-
 ```
 formachine/
-├── packages/
+├── src/
 │   ├── core/          # Core state machine and validation
 │   ├── react/         # React hooks and components
 │   ├── persist/       # Persistence adapters
 └── examples/
-    └── onboarding-flow/  # Example application
+    ├── onboarding-flow/  # Full example application
+    └── minimal/          # Minimal example
 ```
 
 ### Running Tests
@@ -195,19 +194,19 @@ Look for issues labeled `good-first-issue` for beginner-friendly tasks.
 - **Performance** - Optimizations, benchmarks
 - **Bug Fixes** - Check open issues
 
-### Package-Specific
+### Module-Specific
 
-**@formachine/core**
+**core**
 - State machine improvements
 - Validation utilities
 - Type safety enhancements
 
-**@formachine/react**
+**react**
 - New hooks
 - Component improvements
 - React 18+ features
 
-**@formachine/persist**
+**persist**
 - New storage adapters
 - Migration utilities
 - Performance optimizations

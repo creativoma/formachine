@@ -1,11 +1,11 @@
-import { createFormFlow } from '../../core'
 import { act, renderHook } from '@testing-library/react'
+import type { ReactNode } from 'react'
 import { describe, expect, it } from 'vitest'
 import { z } from 'zod'
+import { createFormFlow } from '../../core'
+import { FormFlowProvider } from '../components/Provider'
 import { useFormFlow } from './useFormFlow'
 import { usePath } from './usePath'
-import { FormFlowProvider } from '../components/Provider'
-import type { ReactNode } from 'react'
 
 /**
  * Tests for usePath hook functionality.
@@ -87,9 +87,7 @@ describe('usePath', () => {
 
       const { result } = renderHook(() => usePath(), {
         wrapper: ({ children }: { children: ReactNode }) => (
-          <FormFlowProvider value={formFlowResult.current}>
-            {children}
-          </FormFlowProvider>
+          <FormFlowProvider value={formFlowResult.current}>{children}</FormFlowProvider>
         ),
       })
 

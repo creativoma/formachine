@@ -1,7 +1,7 @@
-import { createFormFlow } from '../../core'
 import { act, renderHook } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { z } from 'zod'
+import { createFormFlow } from '../../core'
 import { useFormFlow } from './useFormFlow'
 
 /**
@@ -48,11 +48,13 @@ describe('useFormFlow - error handling', () => {
         id: 'throwing-flow',
         steps: {
           step1: {
-            schema: z.object({
-              value: z.string(),
-            }).refine(() => {
-              throw new Error('Validation threw an error')
-            }),
+            schema: z
+              .object({
+                value: z.string(),
+              })
+              .refine(() => {
+                throw new Error('Validation threw an error')
+              }),
             next: null,
           },
         },
@@ -81,11 +83,13 @@ describe('useFormFlow - error handling', () => {
         id: 'throwing-flow-prod',
         steps: {
           step1: {
-            schema: z.object({
-              value: z.string(),
-            }).refine(() => {
-              throw new Error('Validation threw an error')
-            }),
+            schema: z
+              .object({
+                value: z.string(),
+              })
+              .refine(() => {
+                throw new Error('Validation threw an error')
+              }),
             next: null,
           },
         },
@@ -116,11 +120,13 @@ describe('useFormFlow - error handling', () => {
         id: 'error-callback-flow',
         steps: {
           step1: {
-            schema: z.object({
-              value: z.string(),
-            }).refine(() => {
-              throw new Error('Test error')
-            }),
+            schema: z
+              .object({
+                value: z.string(),
+              })
+              .refine(() => {
+                throw new Error('Test error')
+              }),
             next: null,
           },
         },
@@ -154,12 +160,14 @@ describe('useFormFlow - error handling', () => {
         id: 'non-error-throw-flow',
         steps: {
           step1: {
-            schema: z.object({
-              value: z.string(),
-            }).refine(() => {
-              // eslint-disable-next-line no-throw-literal
-              throw 'String error'
-            }),
+            schema: z
+              .object({
+                value: z.string(),
+              })
+              .refine(() => {
+                // eslint-disable-next-line no-throw-literal
+                throw 'String error'
+              }),
             next: null,
           },
         },
@@ -300,11 +308,13 @@ describe('useFormFlow - error handling', () => {
         id: 'throwing-optimistic-flow',
         steps: {
           step1: {
-            schema: z.object({
-              value: z.string(),
-            }).refine(() => {
-              throw new Error('Exception during validation')
-            }),
+            schema: z
+              .object({
+                value: z.string(),
+              })
+              .refine(() => {
+                throw new Error('Exception during validation')
+              }),
             next: 'step2',
           },
           step2: {

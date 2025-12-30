@@ -1,11 +1,11 @@
-import { createFormFlow } from '../../core'
 import { act, renderHook } from '@testing-library/react'
+import type { ReactNode } from 'react'
 import { describe, expect, it } from 'vitest'
 import { z } from 'zod'
+import { createFormFlow } from '../../core'
+import { FormFlowProvider } from '../components/Provider'
 import { useFormFlow } from './useFormFlow'
 import { useStep } from './useStep'
-import { FormFlowProvider } from '../components/Provider'
-import type { ReactNode } from 'react'
 
 /**
  * Tests for useStep hook functionality.
@@ -80,9 +80,7 @@ describe('useStep', () => {
 
       const { result } = renderHook(() => useStep('step1'), {
         wrapper: ({ children }: { children: ReactNode }) => (
-          <FormFlowProvider value={formFlowResult.current}>
-            {children}
-          </FormFlowProvider>
+          <FormFlowProvider value={formFlowResult.current}>{children}</FormFlowProvider>
         ),
       })
 
@@ -98,9 +96,7 @@ describe('useStep', () => {
 
       const { result } = renderHook(() => useStep('step2'), {
         wrapper: ({ children }: { children: ReactNode }) => (
-          <FormFlowProvider value={formFlowResult.current}>
-            {children}
-          </FormFlowProvider>
+          <FormFlowProvider value={formFlowResult.current}>{children}</FormFlowProvider>
         ),
       })
 

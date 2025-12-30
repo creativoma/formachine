@@ -1,19 +1,18 @@
 # Changesets Workflow
 
-This project uses [Changesets](https://github.com/changesets/changesets) to manage versions and changelogs for the monorepo packages.
+This project uses [Changesets](https://github.com/changesets/changesets) to manage versions and changelogs.
 
 ## What is a Changeset?
 
-A changeset is a file that describes the changes made and which packages will be affected. Changesets automatically:
-- Update package versions according to semver
-- Generate CHANGELOG.md entries for each package
-- Manage internal dependencies between packages
+A changeset is a file that describes the changes made to the package. Changesets automatically:
+- Update package version according to semver
+- Generate CHANGELOG.md entries
 
 ## Development Workflow
 
 ### 1. Make Code Changes
 
-Work normally on your feature/fix in the packages.
+Work normally on your feature/fix.
 
 ### 2. Create a Changeset
 
@@ -24,12 +23,11 @@ pnpm changeset
 ```
 
 This will ask you:
-1. **Which packages changed?** - Select the affected packages
-2. **What type of change?** - Choose according to [Semantic Versioning](https://semver.org/):
+1. **What type of change?** - Choose according to [Semantic Versioning](https://semver.org/):
    - `patch` (0.0.X) - Bugfixes, minor changes
    - `minor` (0.X.0) - New features (backwards compatible)
    - `major` (X.0.0) - Breaking changes
-3. **Description** - Write a summary of the change
+2. **Description** - Write a summary of the change
 
 A file will be created in `.changeset/` with your changes.
 
@@ -51,8 +49,8 @@ pnpm version
 ```
 
 This will:
-- Update versions in package.json
-- Generate/update CHANGELOG.md for each package
+- Update version in package.json
+- Generate/update CHANGELOG.md
 - Remove the applied changesets
 
 ### 5. Publish (Maintainer)
@@ -63,7 +61,7 @@ pnpm release
 
 This will:
 - Run tests
-- Build packages
+- Build the package
 - Publish to npm
 
 ## Changeset Examples
@@ -72,7 +70,7 @@ This will:
 
 ```markdown
 ---
-"@formachine/core": minor
+"@creativoma/formachine": minor
 ---
 
 Add support for async validators with debouncing
@@ -82,7 +80,7 @@ Add support for async validators with debouncing
 
 ```markdown
 ---
-"@formachine/react": patch
+"@creativoma/formachine": patch
 ---
 
 Fix useFormFlow not updating when flow changes
@@ -92,23 +90,10 @@ Fix useFormFlow not updating when flow changes
 
 ```markdown
 ---
-"@formachine/core": major
-"@formachine/react": major
+"@creativoma/formachine": major
 ---
 
 BREAKING: Rename `createFlow` to `createFormFlow`
-```
-
-### Multiple Packages
-
-```markdown
----
-"@formachine/core": minor
-"@formachine/react": minor
-"@formachine/persist": patch
----
-
-Add persistence TTL support with automatic cleanup
 ```
 
 ## Available Commands
@@ -124,7 +109,6 @@ Add persistence TTL support with automatic cleanup
 2. **Clear descriptions** - Write with users in mind
 3. **Include in PR** - Always commit the changeset with the code
 4. **Correct semver** - Use the appropriate level (patch/minor/major)
-5. **Affect only what's needed** - Mark only packages that actually changed
 
 ## File Structure
 
@@ -134,24 +118,15 @@ Add persistence TTL support with automatic cleanup
 ├── README.md            # Auto-generated documentation
 └── feature-name.md      # Your changesets (removed on version)
 
-packages/
-├── core/
-│   ├── package.json     # Version automatically updated
-│   └── CHANGELOG.md     # Automatically generated
-├── react/
-│   ├── package.json
-│   └── CHANGELOG.md
-└── persist/
-    ├── package.json
-    └── CHANGELOG.md
+package.json             # Version automatically updated
+CHANGELOG.md             # Automatically generated
 ```
 
 ## Configuration
 
 See `.changeset/config.json` for:
-- `access`: "public" - Public packages on npm
+- `access`: "public" - Public package on npm
 - `baseBranch`: "main" - Base branch to compare
-- `updateInternalDependencies`: "patch" - How to update internal deps
 
 ## References
 

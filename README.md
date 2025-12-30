@@ -436,7 +436,7 @@ See the [`examples/`](./examples) directory:
 
 ## Architecture
 
-FormMachine is built as a monorepo with focused packages:
+FormMachine is organized into focused modules:
 
 - **`@creativoma/formachine/core`** - State machine, validation, utilities
 - **`@creativoma/formachine`** - React hooks and components
@@ -466,7 +466,7 @@ Coverage reports are generated in the `coverage/` directory:
 ### Coverage Configuration
 
 The project uses Vitest with V8 coverage provider. Configuration in `vitest.config.ts`:
-- Includes all source files in `packages/*/src/**/*.{ts,tsx}`
+- Includes all source files in `src/**/*.{ts,tsx}`
 - Excludes test files and index exports
 - Generates text, JSON, and HTML reports
 
@@ -485,7 +485,7 @@ pnpm install
 # Run tests
 pnpm test
 
-# Build all packages
+# Build the project
 pnpm build
 
 # Run the example

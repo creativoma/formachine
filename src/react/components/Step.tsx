@@ -1,8 +1,8 @@
 'use client'
 
-import type { AnyStepDefinition, FlowDefinition, InferStepIds } from '../../core'
 import type * as React from 'react'
 import type { FieldErrors, FieldValues, UseFormRegister } from 'react-hook-form'
+import type { AnyStepDefinition, FlowDefinition, InferStepIds } from '../../core'
 import { useFormFlowContext } from '../context'
 
 export interface StepRenderProps {

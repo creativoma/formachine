@@ -1,11 +1,11 @@
-import { createFormFlow } from '../../core'
 import { act, renderHook } from '@testing-library/react'
+import type { ReactNode } from 'react'
 import { describe, expect, it } from 'vitest'
 import { z } from 'zod'
+import { createFormFlow } from '../../core'
+import { FormFlowProvider } from '../components/Provider'
 import { useFormFlow } from './useFormFlow'
 import { usePreloadNext } from './usePreloadNext'
-import { FormFlowProvider } from '../components/Provider'
-import type { ReactNode } from 'react'
 
 /**
  * Tests for usePreloadNext hook functionality.
@@ -96,9 +96,7 @@ describe('usePreloadNext', () => {
 
       const { result } = renderHook(() => usePreloadNext({ enabled: false }), {
         wrapper: ({ children }: { children: ReactNode }) => (
-          <FormFlowProvider value={formFlowResult.current}>
-            {children}
-          </FormFlowProvider>
+          <FormFlowProvider value={formFlowResult.current}>{children}</FormFlowProvider>
         ),
       })
 
@@ -109,15 +107,11 @@ describe('usePreloadNext', () => {
 
     it('should return next step when enabled with data', () => {
       const initialData = { step1: { name: 'John' } }
-      const { result: formFlowResult } = renderHook(() =>
-        useFormFlow(linearFlow, { initialData })
-      )
+      const { result: formFlowResult } = renderHook(() => useFormFlow(linearFlow, { initialData }))
 
       const { result } = renderHook(() => usePreloadNext({ enabled: true }), {
         wrapper: ({ children }: { children: ReactNode }) => (
-          <FormFlowProvider value={formFlowResult.current}>
-            {children}
-          </FormFlowProvider>
+          <FormFlowProvider value={formFlowResult.current}>{children}</FormFlowProvider>
         ),
       })
 
@@ -131,9 +125,7 @@ describe('usePreloadNext', () => {
 
       const { result } = renderHook(() => usePreloadNext({ enabled: true }), {
         wrapper: ({ children }: { children: ReactNode }) => (
-          <FormFlowProvider value={formFlowResult.current}>
-            {children}
-          </FormFlowProvider>
+          <FormFlowProvider value={formFlowResult.current}>{children}</FormFlowProvider>
         ),
       })
 
@@ -143,20 +135,13 @@ describe('usePreloadNext', () => {
 
     it('should respect preloadOnIdle option', () => {
       const initialData = { step1: { name: 'John' } }
-      const { result: formFlowResult } = renderHook(() =>
-        useFormFlow(linearFlow, { initialData })
-      )
+      const { result: formFlowResult } = renderHook(() => useFormFlow(linearFlow, { initialData }))
 
-      const { result } = renderHook(
-        () => usePreloadNext({ enabled: true, preloadOnIdle: false }),
-        {
-          wrapper: ({ children }: { children: ReactNode }) => (
-            <FormFlowProvider value={formFlowResult.current}>
-              {children}
-            </FormFlowProvider>
-          ),
-        }
-      )
+      const { result } = renderHook(() => usePreloadNext({ enabled: true, preloadOnIdle: false }), {
+        wrapper: ({ children }: { children: ReactNode }) => (
+          <FormFlowProvider value={formFlowResult.current}>{children}</FormFlowProvider>
+        ),
+      })
 
       expect(result.current.nextStepId).toBe('step2')
       expect(result.current.shouldPreload).toBe(true)

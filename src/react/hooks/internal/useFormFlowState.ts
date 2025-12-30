@@ -1,5 +1,7 @@
 'use client'
 
+import type { Dispatch, SetStateAction } from 'react'
+import { useState } from 'react'
 import type {
   AnyStepDefinition,
   FlowDefinition,
@@ -9,8 +11,6 @@ import type {
   InferStepIds,
   PartialFlowData,
 } from '../../../core'
-import type { Dispatch, SetStateAction } from 'react'
-import { useState } from 'react'
 
 export interface UseFormFlowStateResult<
   TFlow extends FlowDefinition<Record<string, AnyStepDefinition>>,

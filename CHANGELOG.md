@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.3
+
+### Patch Changes
+
+- refactor: update Vite config and improve import organization
+
 ## 0.2.2
 
 ### Patch Changes

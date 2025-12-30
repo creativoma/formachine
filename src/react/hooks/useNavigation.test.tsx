@@ -1,11 +1,11 @@
-import { createFormFlow } from '../../core'
 import { act, renderHook } from '@testing-library/react'
+import type { ReactNode } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import { z } from 'zod'
+import { createFormFlow } from '../../core'
+import { FormFlowProvider } from '../components/Provider'
 import { useFormFlow } from './useFormFlow'
 import { useNavigation } from './useNavigation'
-import { FormFlowProvider } from '../components/Provider'
-import type { ReactNode } from 'react'
 
 /**
  * Tests for useNavigation hook functionality.
@@ -74,9 +74,7 @@ describe('useNavigation', () => {
 
       const { result } = renderHook(() => useNavigation(), {
         wrapper: ({ children }: { children: ReactNode }) => (
-          <FormFlowProvider value={formFlowResult.current}>
-            {children}
-          </FormFlowProvider>
+          <FormFlowProvider value={formFlowResult.current}>{children}</FormFlowProvider>
         ),
       })
 

@@ -1,5 +1,5 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from 'vitest'
-import { isServer, isClient, safeWindow } from './ssr'
+import { describe, expect, it, vi } from 'vitest'
+import { isClient, isServer, safeWindow } from './ssr'
 
 describe('ssr utilities', () => {
   describe('isServer', () => {
@@ -78,7 +78,10 @@ describe('ssr utilities', () => {
       delete (globalThis as any).window
 
       const complexFallback = { width: 1024, height: 768 }
-      const result = safeWindow((win) => ({ width: win.innerWidth, height: win.innerHeight }), complexFallback)
+      const result = safeWindow(
+        (win) => ({ width: win.innerWidth, height: win.innerHeight }),
+        complexFallback
+      )
 
       expect(result).toEqual(complexFallback)
 
