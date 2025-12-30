@@ -1,7 +1,9 @@
 {
   "name": "minimal-example",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module",
+  "private": true,
+  "description": "A minimal example of formachine usage with React",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

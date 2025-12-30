@@ -1,5 +1,11 @@
 # onboarding-flow-example
 
+## 0.0.4
+
+### Patch Changes
+
+- chore: restore private field from package.json files and add repository info
+
 ## 0.0.3
 
 ### Patch Changes

@@ -1,7 +1,9 @@
 {
   "name": "onboarding-flow-example",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "type": "module",
+  "private": true,
+  "description": "An onboarding flow example using formachine with React",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
