@@ -9,7 +9,7 @@ export default defineConfig({
   format: ['cjs', 'esm'],
   dts: true,
   clean: true,
-  sourcemap: true,
+  sourcemap: false,
   treeshake: true,
   splitting: false,
   external: ['react', 'react-dom', 'react-hook-form', 'zod'],
