@@ -1,6 +1,6 @@
 {
   "name": "formachine",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "private": true,
   "author": "Mariano Álvarez",
   "description": "Type-safe, declarative multi-step forms for React",
@@ -25,10 +25,14 @@
     "check:fix": "biome check --write .",
     "validate": "pnpm check && pnpm typecheck && pnpm test:run",
     "clean": "pnpm -r clean && rm -rf node_modules",
-    "prepublishOnly": "pnpm validate && pnpm build"
+    "prepublishOnly": "pnpm validate && pnpm build",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build && changeset publish"
   },
   "devDependencies": {
     "@biomejs/biome": "2.3.10",
+    "@changesets/cli": "^2.29.8",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.1",
     "@testing-library/user-event": "^14.6.1",

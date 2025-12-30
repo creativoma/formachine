@@ -3,7 +3,7 @@
 > Type-safe, declarative multi-step forms for React.
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
-[![Tests](https://img.shields.io/badge/tests-291%20passing-success)](./package.json)
+[![Tests](https://img.shields.io/badge/tests-439%20passing-success)](./package.json)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A library for building complex multi-step forms with **branching logic**, **persistence**, and **end-to-end type safety**. Built on top of React Hook Form and Zod.
@@ -17,7 +17,7 @@ A library for building complex multi-step forms with **branching logic**, **pers
 - **Async Validation** - Debounced, cached, retryable validations
 - **Type Safety** - Full TypeScript inference from Zod schemas
 - **React Integration** - Hooks and components for seamless UX
-- **Well Tested** - +290 tests passing
+- **Well Tested** - 439 tests passing
 
 ## Quick Start
 
@@ -89,6 +89,97 @@ function SignupForm() {
         Continue
       </button>
     </div>
+  )
+}
+```
+
+### Minimal Example
+
+For a complete working example, check out the [minimal example](./examples/minimal):
+
+```tsx
+// flow.ts
+import { createFormFlow } from '@formachine/core'
+import { z } from 'zod'
+
+export const minimalFlow = createFormFlow({
+  id: 'minimal-example',
+  steps: {
+    name: {
+      schema: z.object({
+        firstName: z.string().min(1, 'First name is required'),
+        lastName: z.string().min(1, 'Last name is required'),
+      }),
+      next: 'email',
+    },
+    email: {
+      schema: z.object({
+        email: z.string().email('Invalid email address'),
+      }),
+      next: 'confirm',
+    },
+    confirm: {
+      schema: z.object({
+        agreeToTerms: z.boolean().refine((val) => val === true, {
+          message: 'You must agree to the terms',
+        }),
+      }),
+      next: null,
+    },
+  },
+  initial: 'name',
+})
+```
+
+```tsx
+// App.tsx
+import { useFormFlow, FormFlowProvider } from '@formachine/react'
+import { minimalFlow } from './flow'
+
+function MinimalForm() {
+  const flow = useFormFlow(minimalFlow, {
+    onComplete: (data) => {
+      console.log('Form completed!', data)
+    },
+  })
+
+  return (
+    <FormFlowProvider value={flow}>
+      <div>
+        {/* Step 1: Name */}
+        {flow.currentStep === 'name' && (
+          <div>
+            <input {...flow.form.register('firstName')} placeholder="First Name" />
+            <input {...flow.form.register('lastName')} placeholder="Last Name" />
+          </div>
+        )}
+
+        {/* Step 2: Email */}
+        {flow.currentStep === 'email' && (
+          <div>
+            <input {...flow.form.register('email')} placeholder="Email" type="email" />
+          </div>
+        )}
+
+        {/* Step 3: Confirm */}
+        {flow.currentStep === 'confirm' && (
+          <div>
+            <label>
+              <input type="checkbox" {...flow.form.register('agreeToTerms')} />
+              I agree to the terms
+            </label>
+          </div>
+        )}
+
+        {/* Navigation */}
+        <div>
+          {flow.canGoBack && <button onClick={flow.back}>Back</button>}
+          <button onClick={flow.next}>
+            {flow.currentStep === 'confirm' ? 'Complete' : 'Next'}
+          </button>
+        </div>
+      </div>
+    </FormFlowProvider>
   )
 }
 ```
@@ -341,6 +432,7 @@ flow.onComplete((data) => {
 See the [`examples/`](./examples) directory:
 
 - **[onboarding-flow](./examples/onboarding-flow)** - Multi-step onboarding with branching, persistence, and conditional logic
+- **[minimal](./examples/minimal)** - Simplest possible multi-step form
 
 ## Architecture
 

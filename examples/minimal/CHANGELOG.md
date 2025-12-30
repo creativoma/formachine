@@ -1,0 +1,17 @@
+# minimal-example
+
+## 0.0.2
+
+### Patch Changes
+
+- 0ec7a68: feat: add changeset files for versioning and changelog management
+- Updated dependencies [0ec7a68]
+- Updated dependencies [0ec7a68]
+- Updated dependencies [0ec7a68]
+- Updated dependencies [0ec7a68]
+- Updated dependencies [0ec7a68]
+- Updated dependencies [0ec7a68]
+- Updated dependencies [0ec7a68]
+- Updated dependencies [0ec7a68]
+  - @formachine/core@0.3.0
+  - @formachine/react@0.2.1
