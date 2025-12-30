@@ -3,11 +3,13 @@ import { act, renderHook } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { z } from 'zod'
 import { useFormFlow } from './useFormFlow'
+import { usePreloadNext } from './usePreloadNext'
+import { FormFlowProvider } from '../components/Provider'
+import type { ReactNode } from 'react'
 
 /**
  * Tests for usePreloadNext hook functionality.
- * Since usePreloadNext uses values from FormFlowContext,
- * we test the preloading logic through useFormFlow and path calculations.
+ * We test both directly using usePreloadNext and through useFormFlow.
  */
 describe('usePreloadNext', () => {
   const linearFlow = createFormFlow({
@@ -87,6 +89,79 @@ describe('usePreloadNext', () => {
     }
     return path[currentIndex + 1] ?? null
   }
+
+  describe('direct hook usage', () => {
+    it('should return preload info when disabled', () => {
+      const { result: formFlowResult } = renderHook(() => useFormFlow(linearFlow))
+
+      const { result } = renderHook(() => usePreloadNext({ enabled: false }), {
+        wrapper: ({ children }: { children: ReactNode }) => (
+          <FormFlowProvider value={formFlowResult.current}>
+            {children}
+          </FormFlowProvider>
+        ),
+      })
+
+      expect(result.current.nextStepId).toBeNull()
+      expect(result.current.shouldPreload).toBe(false)
+      expect(result.current.preloadComponent).toBe(false)
+    })
+
+    it('should return next step when enabled with data', () => {
+      const initialData = { step1: { name: 'John' } }
+      const { result: formFlowResult } = renderHook(() =>
+        useFormFlow(linearFlow, { initialData })
+      )
+
+      const { result } = renderHook(() => usePreloadNext({ enabled: true }), {
+        wrapper: ({ children }: { children: ReactNode }) => (
+          <FormFlowProvider value={formFlowResult.current}>
+            {children}
+          </FormFlowProvider>
+        ),
+      })
+
+      expect(result.current.nextStepId).toBe('step2')
+      expect(result.current.shouldPreload).toBe(true)
+      expect(result.current.preloadComponent).toBe(true)
+    })
+
+    it('should return null when no next step', () => {
+      const { result: formFlowResult } = renderHook(() => useFormFlow(singleStepFlow))
+
+      const { result } = renderHook(() => usePreloadNext({ enabled: true }), {
+        wrapper: ({ children }: { children: ReactNode }) => (
+          <FormFlowProvider value={formFlowResult.current}>
+            {children}
+          </FormFlowProvider>
+        ),
+      })
+
+      expect(result.current.nextStepId).toBeNull()
+      expect(result.current.shouldPreload).toBe(false)
+    })
+
+    it('should respect preloadOnIdle option', () => {
+      const initialData = { step1: { name: 'John' } }
+      const { result: formFlowResult } = renderHook(() =>
+        useFormFlow(linearFlow, { initialData })
+      )
+
+      const { result } = renderHook(
+        () => usePreloadNext({ enabled: true, preloadOnIdle: false }),
+        {
+          wrapper: ({ children }: { children: ReactNode }) => (
+            <FormFlowProvider value={formFlowResult.current}>
+              {children}
+            </FormFlowProvider>
+          ),
+        }
+      )
+
+      expect(result.current.nextStepId).toBe('step2')
+      expect(result.current.shouldPreload).toBe(true)
+    })
+  })
 
   describe('next step calculation', () => {
     it('should return next step when path has more steps', () => {

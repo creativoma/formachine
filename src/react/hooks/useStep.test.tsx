@@ -3,11 +3,13 @@ import { act, renderHook } from '@testing-library/react'
 import { describe, expect, it } from 'vitest'
 import { z } from 'zod'
 import { useFormFlow } from './useFormFlow'
+import { useStep } from './useStep'
+import { FormFlowProvider } from '../components/Provider'
+import type { ReactNode } from 'react'
 
 /**
  * Tests for useStep hook functionality.
- * Since useStep extracts step-specific values from the FormFlowContext,
- * we test through useFormFlow which provides these values.
+ * We test both directly using useStep and through useFormFlow.
  */
 describe('useStep', () => {
   const linearFlow = createFormFlow({
@@ -71,6 +73,43 @@ describe('useStep', () => {
   const isStepCompleted = (completedSteps: Set<string>, stepId: string) =>
     completedSteps.has(stepId)
   const isStepReachable = (path: string[], stepId: string) => path.includes(stepId)
+
+  describe('direct hook usage', () => {
+    it('should return step values from context', () => {
+      const { result: formFlowResult } = renderHook(() => useFormFlow(linearFlow))
+
+      const { result } = renderHook(() => useStep('step1'), {
+        wrapper: ({ children }: { children: ReactNode }) => (
+          <FormFlowProvider value={formFlowResult.current}>
+            {children}
+          </FormFlowProvider>
+        ),
+      })
+
+      expect(result.current.stepId).toBe('step1')
+      expect(result.current.isActive).toBe(true)
+      expect(result.current.isCompleted).toBe(false)
+      expect(result.current.isReachable).toBe(true)
+      expect(result.current.data).toBeUndefined()
+    })
+
+    it('should return correct values for inactive step', () => {
+      const { result: formFlowResult } = renderHook(() => useFormFlow(linearFlow))
+
+      const { result } = renderHook(() => useStep('step2'), {
+        wrapper: ({ children }: { children: ReactNode }) => (
+          <FormFlowProvider value={formFlowResult.current}>
+            {children}
+          </FormFlowProvider>
+        ),
+      })
+
+      expect(result.current.stepId).toBe('step2')
+      expect(result.current.isActive).toBe(false)
+      expect(result.current.isCompleted).toBe(false)
+      expect(result.current.isReachable).toBe(false)
+    })
+  })
 
   describe('isActive', () => {
     it('should return true when step is current', () => {

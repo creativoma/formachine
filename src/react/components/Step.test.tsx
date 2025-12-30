@@ -1,5 +1,5 @@
 import { createFormFlow } from '../../core'
-import { render, screen } from '@testing-library/react'
+import { act, render, screen } from '@testing-library/react'
 import type { ReactNode } from 'react'
 import { describe, expect, it, vi } from 'vitest'
 import { z } from 'zod'
@@ -117,5 +117,54 @@ describe('Step', () => {
     expect(props).toBeDefined()
     // step1 is the last step in the current path (only step with no data for step2)
     expect(props?.isLastStep).toBe(true)
+  })
+
+  it('should call preventDefault when submit is called with event', async () => {
+    let capturedProps: StepRenderProps | null = null
+
+    render(
+      <TestWrapper>
+        <Step name="step1">
+          {(props) => {
+            capturedProps = props
+            return <div>Content</div>
+          }}
+        </Step>
+      </TestWrapper>
+    )
+
+    expect(capturedProps).not.toBeNull()
+
+    const mockEvent = {
+      preventDefault: vi.fn(),
+    } as unknown as React.BaseSyntheticEvent
+
+    await act(async () => {
+      await capturedProps?.submit(mockEvent)
+    })
+
+    expect(mockEvent.preventDefault).toHaveBeenCalled()
+  })
+
+  it('should handle submit without event', async () => {
+    let capturedProps: StepRenderProps | null = null
+
+    render(
+      <TestWrapper>
+        <Step name="step1">
+          {(props) => {
+            capturedProps = props
+            return <div>Content</div>
+          }}
+        </Step>
+      </TestWrapper>
+    )
+
+    expect(capturedProps).not.toBeNull()
+
+    // Should not throw when called without event
+    await act(async () => {
+      await capturedProps?.submit()
+    })
   })
 })
