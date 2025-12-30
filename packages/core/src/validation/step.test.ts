@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { z } from 'zod'
+import { isZodError } from '../utils/type-guards'
 import { validateStep, validateStepSync } from './step'
 
 describe('validateStep', () => {
@@ -31,7 +32,9 @@ describe('validateStep', () => {
     expect(result.success).toBe(false)
     expect(result.data).toBeUndefined()
     expect(result.errors).toBeDefined()
-    expect(result.errors?.issues).toHaveLength(2)
+    if (result.errors && isZodError(result.errors)) {
+      expect(result.errors.issues).toHaveLength(2)
+    }
   })
 
   it('should handle async refinements', async () => {

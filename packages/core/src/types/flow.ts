@@ -47,7 +47,7 @@ export interface StepDefinition<
 
 export interface AnyStepDefinition {
   schema: z.ZodType
-  next: AnyTransition<string>
+  next?: AnyTransition<string>
 }
 
 export interface FlowDefinition<TSteps extends Record<StepId, AnyStepDefinition>> {

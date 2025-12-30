@@ -1,4 +1,5 @@
 import type { z } from 'zod'
+import { isError, isZodError } from '../utils/type-guards'
 import type { ValidationResult } from './step'
 
 /**
@@ -77,7 +78,15 @@ export function createValidator<TInput, TOutput = TInput>(options: {
         const result = await options.validate(data)
         return { success: true, data: result }
       } catch (error) {
-        return { success: false, errors: error as z.ZodError }
+        if (isZodError(error)) {
+          return { success: false, errors: error }
+        }
+        // Return generic errors as validation errors
+        if (isError(error)) {
+          return { success: false, errors: error }
+        }
+        // Re-throw non-validation errors
+        throw error
       }
     },
 
@@ -89,7 +98,15 @@ export function createValidator<TInput, TOutput = TInput>(options: {
             const result = options.validateSync?.(data)
             return { success: true, data: result }
           } catch (error) {
-            return { success: false, errors: error as z.ZodError }
+            if (isZodError(error)) {
+              return { success: false, errors: error }
+            }
+            // Return generic errors as validation errors
+            if (isError(error)) {
+              return { success: false, errors: error }
+            }
+            // Re-throw non-validation errors
+            throw error
           }
         }
       : undefined,

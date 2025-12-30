@@ -3,7 +3,7 @@ import type { z } from 'zod'
 export interface ValidationResult<T> {
   success: boolean
   data?: T
-  errors?: z.ZodError
+  errors?: z.ZodError | Error
 }
 
 export async function validateStep<TSchema extends z.ZodType>(
