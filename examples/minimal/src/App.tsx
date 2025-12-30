@@ -1,5 +1,5 @@
-import type { InferFlowData } from '@formachine/core'
-import { FormFlowProvider, useFormFlow } from '@formachine/react'
+import { FormFlowProvider, useFormFlow } from '@creativoma/formachine'
+import type { InferFlowData } from '@creativoma/formachine/core'
 import { useState } from 'react'
 import { minimalFlow } from './flow'
 import './App.css'

@@ -1,4 +1,4 @@
-import { useFormFlowContext } from '@formachine/react'
+import { useFormFlowContext } from '@creativoma/formachine'
 import { Bell, Mail, Palette, Settings } from 'lucide-react'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'

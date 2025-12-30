@@ -1,4 +1,4 @@
-import { FormFlowProvider, useFormFlow } from '@formachine/react'
+import { FormFlowProvider, useFormFlow } from '@creativoma/formachine'
 import { Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Toaster, toast } from 'sonner'

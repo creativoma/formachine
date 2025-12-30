@@ -1,4 +1,4 @@
-import { useFormFlowContext } from '@formachine/react'
+import { useFormFlowContext } from '@creativoma/formachine'
 import { CheckCircle } from 'lucide-react'
 import type { FieldError } from 'react-hook-form'
 import { Checkbox } from '@/components/ui/checkbox'

@@ -1,4 +1,4 @@
-import { Step, useFormFlowContext } from '@formachine/react'
+import { Step, useFormFlowContext } from '@creativoma/formachine'
 import type { OnboardingStepId } from '@/types/onboarding'
 import { BusinessInfoStep } from '../steps/BusinessInfoStep'
 import { CompleteStep } from '../steps/CompleteStep'

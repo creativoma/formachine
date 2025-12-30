@@ -1,4 +1,4 @@
-import { useFormFlowContext } from '@formachine/react'
+import { useFormFlowContext } from '@creativoma/formachine'
 import { Building, Sparkles, User } from 'lucide-react'
 import { FormError } from '../form/FormError'
 import { RadioCard } from '../form/RadioCard'

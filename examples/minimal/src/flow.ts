@@ -1,4 +1,4 @@
-import { createFormFlow } from '@formachine/core'
+import { createFormFlow } from '@creativoma/formachine/core'
 import { z } from 'zod'
 
 /**

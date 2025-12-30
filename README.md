@@ -1,10 +1,10 @@
-# formachine
-
-> Type-safe, declarative multi-step forms for React.
+![cover](./public/cover.avif)
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
 [![Tests](https://img.shields.io/badge/tests-439%20passing-success)](./package.json)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+**Type-safe, declarative multi-step forms for React**
 
 A library for building complex multi-step forms with **branching logic**, **persistence**, and **end-to-end type safety**. Built on top of React Hook Form and Zod.
 
@@ -29,22 +29,20 @@ A library for building complex multi-step forms with **branching logic**, **pers
 ### Installation
 
 ```bash
-npm install @formachine/core @formachine/react zod react-hook-form
-# Optional: for persistence
-npm install @formachine/persist
+npm install @creativoma/formachine zod react-hook-form
+
 
 # Or with pnpm
-pnpm add @formachine/core @formachine/react zod react-hook-form
-# Optional: for persistence
-pnpm add @formachine/persist
+pnpm add @creativoma/formachine zod react-hook-form
+
 ```
 
 ### Basic Example
 
 ```tsx
 import { z } from 'zod'
-import { createFormFlow } from '@formachine/core'
-import { useFormFlow, Step } from '@formachine/react'
+import { createFormFlow } from '@creativoma/formachine/core'
+import { useFormFlow, Step } from '@creativoma/formachine'
 
 // 1. Define your flow
 const signupFlow = createFormFlow({
@@ -99,7 +97,7 @@ For a complete working example, check out the [minimal example](./examples/minim
 
 ```tsx
 // flow.ts
-import { createFormFlow } from '@formachine/core'
+import { createFormFlow } from '@creativoma/formachine/core'
 import { z } from 'zod'
 
 export const minimalFlow = createFormFlow({
@@ -133,7 +131,7 @@ export const minimalFlow = createFormFlow({
 
 ```tsx
 // App.tsx
-import { useFormFlow, FormFlowProvider } from '@formachine/react'
+import { useFormFlow, FormFlowProvider } from '@creativoma/formachine'
 import { minimalFlow } from './flow'
 
 function MinimalForm() {
@@ -227,8 +225,8 @@ const surveyFlow = createFormFlow({
 ### Persistence with TTL
 
 ```tsx
-import { withPersistence } from '@formachine/persist'
-import { localStorage } from '@formachine/persist/adapters'
+import { withPersistence } from '@creativoma/formachine/persist'
+import { localStorage } from '@creativoma/formachine/persist'
 
 const persistedFlow = withPersistence(signupFlow, {
   adapter: localStorage,
@@ -262,7 +260,7 @@ function App() {
 ### Async Validation with Retry
 
 ```tsx
-import { debounce, withRetry } from '@formachine/core'
+import { debounce, withRetry } from '@creativoma/formachine/core'
 
 const checkEmailAvailability = debounce(async (email: string) => {
   return withRetry(
@@ -287,7 +285,7 @@ const schema = z.object({
 
 ## API Reference
 
-### Core Package (`@formachine/core`)
+### Core Package (`@creativoma/formachine/core`)
 
 #### `createFormFlow(definition)`
 
@@ -314,10 +312,10 @@ import {
   withRetry,            // Retry failed operations
   createAbortableValidation, // Cancel in-flight validations
   createValidationCache,     // Cache validation results
-} from '@formachine/core'
+} from '@creativoma/formachine/core'
 ```
 
-### React Package (`@formachine/react`)
+### React Package (`@creativoma/formachine`)
 
 #### `useFormFlow(flow, options)`
 
@@ -362,7 +360,7 @@ Renders content for specific step.
 </Step>
 ```
 
-### Persist Package (`@formachine/persist`)
+### Persist Package (`@creativoma/formachine/persist`)
 
 #### `withPersistence(flow, options)`
 
@@ -390,7 +388,7 @@ import {
   localStorage,
   sessionStorage,
   createAdapter,
-} from '@formachine/persist/adapters'
+} from '@creativoma/formachine/persist'
 
 // Custom adapter
 const customAdapter = createAdapter({
@@ -438,9 +436,9 @@ See the [`examples/`](./examples) directory:
 
 FormMachine is built as a monorepo with focused packages:
 
-- **`@formachine/core`** - State machine, validation, utilities
-- **`@formachine/react`** - React hooks and components
-- **`@formachine/persist`** - Persistence adapters
+- **`@creativoma/formachine/core`** - State machine, validation, utilities
+- **`@creativoma/formachine`** - React hooks and components
+- **`@creativoma/formachine/persist`** - Persistence adapters
 
 ## Testing & Coverage
 

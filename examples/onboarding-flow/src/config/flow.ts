@@ -1,6 +1,5 @@
-import { createFormFlow } from '@formachine/core'
-import { withPersistence } from '@formachine/persist'
-import { localStorage } from '@formachine/persist/adapters'
+import { createFormFlow } from '@creativoma/formachine/core'
+import { localStorage, withPersistence } from '@creativoma/formachine/persist'
 import { z } from 'zod'
 
 export const onboardingFlowDefinition = createFormFlow({
